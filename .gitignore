@@ -1,0 +1,28 @@
+# secrets / env
+.env
+*.pem
+*.p8
+keys/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# airflow runtime
+logs/
+plugins/
+airflow.cfg
+airflow.db
+
+# dbt artifacts
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+
