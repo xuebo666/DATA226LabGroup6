@@ -2,6 +2,7 @@ WITH daily AS (
 
     SELECT *
     FROM {{ ref('weather_daily') }}
+    WHERE data_type = 'HISTORICAL'
 
 ),
 
@@ -29,7 +30,6 @@ metrics AS (
 
         rainy_hours,
         dominant_weather_code,
-        data_type,
 
         /* 7-day moving average temperature */
         AVG(avg_temperature) OVER (
@@ -72,7 +72,7 @@ SELECT
     /* Consecutive dry spell */
     SUM(
         CASE
-            WHEN is_dry_day = 0 THEN 1
+            WHEN is_dry_day = 1 THEN 1
             ELSE 0
         END
     ) OVER (

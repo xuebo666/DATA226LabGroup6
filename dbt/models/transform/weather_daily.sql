@@ -16,7 +16,7 @@ WITH hourly AS (
         wind_direction,
 
         CASE
-            WHEN weather_time <= CURRENT_TIMESTAMP()
+            WHEN weather_time < CURRENT_TIMESTAMP()
                 THEN 'HISTORICAL'
             ELSE 'FORECAST'
         END AS data_type
@@ -47,12 +47,8 @@ daily AS (
 
         COUNT_IF(precipitation >= 1) AS rainy_hours,
 
-        MAX(
-            CASE
-                WHEN precipitation < 1 THEN 1
-                ELSE 0
-            END
-        ) AS has_dry_period,
+        /* Presence of at least one dry hour in the day */
+        MAX(CASE WHEN precipitation < 1 THEN 1 ELSE 0 END) AS has_dry_hour,
 
         MODE(weather_code) AS dominant_weather_code,
 

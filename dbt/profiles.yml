@@ -1,14 +1,14 @@
-build_mau:
+lab:
   outputs:
     dev:
-      account: "{{ env_var('DBT_ACCOUNT') }}"
-      database: "{{ env_var('DBT_DATABASE') }}"
-      private_key_passphrase: "{{ env_var('DBT_PRIVATE_KEY_PASSPHRASE') }}"
-      private_key_path: "{{ env_var('DBT_PRIVATE_KEY_PATH') }}"
-      role: "{{ env_var('DBT_ROLE') }}"
+      account: CMGDXIF-QT58595
+      database: DATA226LAB
+      private_key_passphrase: sjsu
+      private_key_path: /Users/hellojava/Desktop/SJSU 2026 FALL/DATA 226/Lab/DATA226LabGroup6/keys/rsa_key.p8
+      role: ACCOUNTADMIN
+      schema: RAW
       threads: 1
-      schema: analytics
-      type: "{{ env_var('DBT_TYPE') }}"
-      user: "{{ env_var('DBT_USER') }}"
-      warehouse: "{{ env_var('DBT_WAREHOUSE') }}"
+      type: snowflake
+      user: DATA226STUDY
+      warehouse: DATA226HOMEWORK
   target: dev

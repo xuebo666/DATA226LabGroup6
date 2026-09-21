@@ -17,6 +17,13 @@ models:
       - name: longitude
         tests:
           - not_null
+      
+      - name: data_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['HISTORICAL', 'FORECAST']
 
   - name: weather_metrics
     description: "Daily weather analytics including moving averages, anomalies, rolling rainfall, and dry spell length."
@@ -46,3 +53,7 @@ models:
       - name: is_dry_day
         tests:
           - not_null
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+    
