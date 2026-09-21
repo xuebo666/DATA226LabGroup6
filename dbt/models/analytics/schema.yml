@@ -1,0 +1,48 @@
+version: 2
+
+models:
+
+  - name: weather_daily
+    description: "Daily weather data transformed from hourly Open-Meteo data."
+
+    columns:
+      - name: weather_date
+        tests:
+          - not_null
+
+      - name: latitude
+        tests:
+          - not_null
+
+      - name: longitude
+        tests:
+          - not_null
+
+  - name: weather_metrics
+    description: "Daily weather analytics including moving averages, anomalies, rolling rainfall, and dry spell length."
+
+    columns:
+
+      - name: weather_date
+        tests:
+          - not_null
+
+      - name: avg_temperature
+        tests:
+          - not_null
+
+      - name: temperature_7day_moving_avg
+        tests:
+          - not_null
+
+      - name: rainfall_7day_rolling
+        tests:
+          - not_null
+
+      - name: temperature_anomaly
+        tests:
+          - not_null
+
+      - name: is_dry_day
+        tests:
+          - not_null
