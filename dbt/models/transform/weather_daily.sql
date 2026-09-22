@@ -30,38 +30,29 @@ daily AS (
         longitude,
         weather_date,
 
-        AVG(temperature) AS avg_temperature,
-        MAX(temperature) AS max_temperature,
-        MIN(temperature) AS min_temperature,
+        ROUND(AVG(temperature), 2) AS avg_temperature,
+        ROUND(MAX(temperature), 2) AS max_temperature,
+        ROUND(MIN(temperature), 2) AS min_temperature,
 
-        AVG(humidity) AS avg_humidity,
-        AVG(apparent_temperature) AS avg_apparent_temperature,
+        ROUND(AVG(humidity), 2) AS avg_humidity,
+        ROUND(AVG(apparent_temperature), 2) AS avg_apparent_temperature,
 
-        SUM(precipitation) AS daily_precipitation,
-        SUM(rain) AS daily_rain,
-        SUM(showers) AS daily_showers,
-        SUM(snowfall) AS daily_snowfall,
+        ROUND(SUM(precipitation), 2) AS daily_precipitation,
+        ROUND(SUM(rain), 2) AS daily_rain,
+        ROUND(SUM(showers), 2) AS daily_showers,
+        ROUND(SUM(snowfall), 2) AS daily_snowfall,
 
-        AVG(wind_speed) AS avg_wind_speed,
-        MAX(wind_speed) AS max_wind_speed,
+        ROUND(AVG(wind_speed), 2) AS avg_wind_speed,
+        ROUND(MAX(wind_speed), 2) AS max_wind_speed,
 
         COUNT_IF(precipitation >= 1) AS rainy_hours,
-
-        /* Presence of at least one dry hour in the day */
         MAX(CASE WHEN precipitation < 1 THEN 1 ELSE 0 END) AS has_dry_hour,
-
         MODE(weather_code) AS dominant_weather_code,
-
         data_type
 
     FROM hourly
-
-    GROUP BY
-        latitude,
-        longitude,
-        weather_date,
-        data_type
-)
+    GROUP BY latitude, longitude, weather_date, data_type
+) 
 
 SELECT *
 FROM daily
