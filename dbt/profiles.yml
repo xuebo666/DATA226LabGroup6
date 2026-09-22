@@ -3,7 +3,7 @@ lab:
     dev:
       account: CMGDXIF-QT58595
       database: DATA226LAB
-      private_key_passphrase: "{{ env_var('DBT_KEY_PASSPHRASE') }}"
+      private_key_passphrase: "sjsu"
       private_key_path: "{{ env_var('DBT_KEY_PATH') }}"
       role: ACCOUNTADMIN
       schema: RAW

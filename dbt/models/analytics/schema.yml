@@ -22,8 +22,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: ['HISTORICAL', 'FORECAST']
+              values: ['HISTORICAL', 'FORECAST']
 
   - name: weather_metrics
     description: "Daily weather analytics including moving averages, anomalies, rolling rainfall, and dry spell length."
@@ -54,6 +53,5 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [0, 1]
+              values: [0, 1]
     
