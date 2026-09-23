@@ -6,7 +6,7 @@ lab:
       private_key_passphrase: "sjsu"
       private_key_path: "{{ env_var('DBT_KEY_PATH') }}"
       role: ACCOUNTADMIN
-      schema: RAW
+      schema: ANALYTICS
       threads: 1
       type: snowflake
       user: DATA226STUDY

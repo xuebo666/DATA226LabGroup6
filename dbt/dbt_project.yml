@@ -35,4 +35,4 @@ models:
     analytics:
       +materialized: table
     transform:
-      +materialized: ephemeral
+      +materialized: table
