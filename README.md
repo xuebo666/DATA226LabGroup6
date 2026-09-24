@@ -140,6 +140,7 @@ The `weather_hourly_snapshot` snapshot re-checks the tracked columns on every ru
 
 ## Team 6
 Xuebo Zhou
+
 Yifan Huang
 
 ## Repository
