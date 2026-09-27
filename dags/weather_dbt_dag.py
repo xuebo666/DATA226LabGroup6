@@ -2,7 +2,6 @@ from __future__ import annotations
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-from airflow.models import Variable
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt"
 
