@@ -6,6 +6,12 @@ models:
     description: "Daily weather data transformed from hourly Open-Meteo data."
 
     columns:
+      - name: location
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Beijing', 'Shanghai']
+              
       - name: weather_date
         tests:
           - not_null

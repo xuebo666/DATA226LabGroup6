@@ -1,15 +1,13 @@
 from __future__ import annotations
-
 from datetime import datetime
-
 from airflow import DAG
 from airflow.operators.bash import BashOperator
-
+from airflow.models import Variable
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt"
+
 DBT_ENV = {
     "DBT_KEY_PATH": "/opt/airflow/keys/rsa_key.p8",
-    "DBT_KEY_PASSPHRASE": "sjsu", 
 }
 
 

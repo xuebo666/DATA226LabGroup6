@@ -1,19 +1,11 @@
 WITH hourly AS (
     SELECT
-        latitude,
-        longitude,
+        latitude, longitude,
         CAST(weather_time AS DATE) AS weather_date,
 
-        temperature,
-        humidity,
-        apparent_temperature,
-        precipitation,
-        rain,
-        showers,
-        snowfall,
-        weather_code,
-        wind_speed,
-        wind_direction,
+        temperature, humidity, apparent_temperature,
+        precipitation, rain, showers, snowfall,
+        weather_code, wind_speed, wind_direction,
 
         CASE
             WHEN weather_time < CURRENT_TIMESTAMP()
@@ -26,9 +18,7 @@ WITH hourly AS (
 
 daily AS (
     SELECT
-        latitude,
-        longitude,
-        weather_date,
+        latitude, longitude, weather_date,
 
         ROUND(AVG(temperature), 2) AS avg_temperature,
         ROUND(MAX(temperature), 2) AS max_temperature,
@@ -48,11 +38,18 @@ daily AS (
         COUNT_IF(precipitation >= 1) AS rainy_hours,
         MAX(CASE WHEN precipitation < 1 THEN 1 ELSE 0 END) AS has_dry_hour,
         MODE(weather_code) AS dominant_weather_code,
-        data_type
+        IFF(weather_date < CAST(CURRENT_TIMESTAMP() AS DATE), 'HISTORICAL', 'FORECAST') AS data_type
 
     FROM hourly
-    GROUP BY latitude, longitude, weather_date, data_type
+    GROUP BY latitude, longitude, weather_date
 ) 
 
-SELECT *
+SELECT *, 
+    CASE 
+        WHEN latitude = 39.9075 AND longitude = 116.3972
+            THEN 'Beijing' 
+        WHEN latitude = 31.2222 AND longitude = 121.4581
+            THEN 'Shanghai' 
+        ELSE 'Unknown' 
+    END AS location 
 FROM daily
