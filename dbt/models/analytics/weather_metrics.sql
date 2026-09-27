@@ -6,7 +6,7 @@ WITH daily AS (
 
 metrics AS (
     SELECT
-        latitude, longitude, weather_date,
+        location, latitude, longitude, weather_date,
         avg_temperature, max_temperature, min_temperature,
         avg_humidity, avg_apparent_temperature,
         daily_precipitation, daily_rain, daily_showers, daily_snowfall,
