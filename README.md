@@ -1,5 +1,16 @@
 # Weather Prediction Analytics Using Snowflake, Airflow, dbt & Preset
 
+---
+
+# Authors
+
+**DATA 226 — Weather Prediction Analytics Project**
+
+Team Members:
+
+* Xuebo Zhou
+* Yifan Huang
+
 ## Project Overview
 
 This project implements an end-to-end weather data analytics pipeline for **Beijing and Shanghai, China**.
@@ -25,7 +36,7 @@ The project demonstrates an automated data engineering and analytics workflow th
 ```text
                     ┌─────────────────────┐
                     │    Open-Meteo API   │
-                    │  Weather Data Source │
+                    │  Weather Data Source│
                     └──────────┬──────────┘
                                │
                                │ Hourly Weather Data
@@ -55,10 +66,10 @@ The project demonstrates an automated data engineering and analytics workflow th
              │  └── weather_daily              │
              │                                 │
              │  Analytics                      │
-             │  └── weather_metrics             │
+             │  └── weather_metrics            │
              │                                 │
              │  Snapshot                       │
-             │  └── weather_hourly_snapshot     │
+             │  └── weather_hourly_snapshot    │
              └────────────────┬────────────────┘
                               │
                               │ Analytics Data
@@ -84,8 +95,6 @@ The pipeline collects weather data for two locations:
 | Shanghai |  31.2304 |  121.4737 |
 
 Both locations use the `Asia/Shanghai` timezone.
-
-> If different coordinates are configured in the Airflow Variables, those configured values should be treated as the source of truth.
 
 ---
 
@@ -511,96 +520,139 @@ The main BI dataset is:
 
 ```text
 DATA226LAB.ANALYTICS.WEATHER_METRICS
+DATA226LAB.ANALYTICS.WEATHER_DAILY
 ```
 
-This table is the primary analytical dataset for the dashboard.
+## Dashboard Title
 
-The dashboard is designed to compare weather patterns between:
-
-* Beijing
-* Shanghai
+**Weather Prediction Analytics — Beijing & Shanghai**
 
 ## Dashboard Purpose
 
-The dashboard provides an interactive view of:
+The dashboard provides an interactive overview of historical and forecast weather conditions for Beijing and Shanghai.
 
-* Temperature trends
-* Temperature moving averages
-* Temperature anomalies
-* Daily rainfall
-* Rolling rainfall
-* Dry spell length
+It allows users to examine temperature behavior, rainfall patterns, humidity, dry spells, and temperature anomalies over time.
 
-## Recommended Dashboard Components
+---
 
-### 1. Average Temperature KPI
+# Dashboard Visualizations
 
-Displays the average temperature for the selected location and date range.
+The dashboard contains the following KPIs and charts.
 
-### 2. Temperature Anomaly KPI
+## 1. Longest Dry Spell — KPI
 
-Displays the average or selected-period temperature anomaly.
+This KPI displays the longest observed consecutive dry spell for the selected location and date range.
 
-### 3. Temperature Trend
+It helps identify periods with extended periods of low precipitation.
 
-A time-series chart comparing:
+---
+
+## 2. Average Temperature — KPI
+
+This KPI displays the average temperature for the selected location and analysis period.
+
+It provides a quick summary of the overall temperature conditions.
+
+---
+
+## 3. 7-Day Forecast — Line Chart
+
+The 7-day forecast visualization displays forecast temperature values over the upcoming seven days.
+
+This chart provides a forward-looking view of expected temperature conditions.
+
+---
+
+## 4. Humidity vs. Temperature — Scatter Plot
+
+The scatter plot compares:
 
 ```text
-Average Temperature
-7-Day Moving Average
+X-axis: Temperature
+Y-axis: Humidity
 ```
 
-for Beijing and Shanghai.
+Each point represents a weather observation.
 
-### 4. Temperature Anomaly
+This visualization helps examine the relationship between temperature and relative humidity.
 
-A time-series visualization showing daily temperature anomalies.
+---
 
-### 5. 7-Day Rolling Rainfall
+## 5. Temperature Distribution — Box Plot
 
-Shows rainfall accumulation over a rolling seven-day period.
+The box plot shows the distribution of temperature values.
 
-### 6. Daily Rainfall
+It provides information about:
 
-Shows daily precipitation by date.
+* Median temperature
+* Lower and upper quartiles
+* Temperature spread
+* Potential outliers
 
-### 7. Dry Spell Length
+The visualization can be used to compare the temperature distributions of Beijing and Shanghai.
 
-Shows the length of consecutive dry periods.
+---
+
+## 6. Dry Spell Length — Bar Chart
+
+The bar chart displays dry spell length over time.
+
+It highlights periods when consecutive dry days occurred and allows users to identify longer dry periods.
+
+---
+
+## 7. Rolling Rainfall — Line Chart
+
+The rolling rainfall chart displays the seven-day rolling precipitation total.
+
+It helps identify periods with increasing or decreasing rainfall accumulation.
+
+---
+
+## 8. Temperature Trend — Line Chart
+
+The temperature trend chart displays daily temperature over time.
+
+It can include:
+
+* Daily average temperature
+* 7-day moving average
+
+The chart allows users to observe short-term temperature patterns and smoother longer-term trends.
+
+---
+
+## 9. Temperature Anomaly — Line Chart
+
+The temperature anomaly chart displays the difference between daily average temperature and the historical average temperature.
+
+```text
+Temperature Anomaly =
+Daily Temperature - Historical Average Temperature
+```
+
+Values above zero represent temperatures above the historical average, while values below zero represent temperatures below the historical average.
 
 ---
 
 # Dashboard Filters
 
-The dashboard should provide interactive filters for:
+The dashboard provides interactive filtering capabilities, including:
 
-```text
-Location
-Date Range
-```
+### Location
 
-The location filter allows users to select:
+Users can select:
 
 ```text
 Beijing
 Shanghai
 ```
 
-The date filter allows users to change the analysis period.
+### Date Range
 
-For project demonstration screenshots, the dashboard can be captured using different selections, such as:
+Users can select different analysis periods to examine historical weather conditions.
 
-```text
-Screenshot 1:
-Beijing + Shanghai
-Last 30 Days
-
-Screenshot 2:
-Beijing
-Last 7 Days
-```
-
-This demonstrates that the dashboard responds dynamically to user-selected filters.
+Changing the filters updates the dashboard visualizations based on the selected location and date range.
 
 ---
 
@@ -674,12 +726,6 @@ The dbt connection can be verified with:
 dbt debug --profiles-dir . --project-dir .
 ```
 
-The expected result is:
-
-```text
-All checks passed!
-```
-
 ---
 
 # Verify Snowflake Data
@@ -700,13 +746,6 @@ SELECT
     COUNT(*) AS row_count
 FROM DATA226LAB.ANALYTICS.WEATHER_METRICS
 GROUP BY location;
-```
-
-The results should contain data for:
-
-```text
-Beijing
-Shanghai
 ```
 
 ---
@@ -755,8 +794,6 @@ The `weather_daily` model is configured as an intermediate dbt transformation an
 ├── README.md
 └── .gitignore
 ```
-
-> Private keys, passwords, passphrases, and other credentials must not be committed to the repository.
 
 ---
 
@@ -850,14 +887,3 @@ The project also demonstrates important data engineering practices including:
 * Snowflake — Cloud data warehouse
 * dbt — Data transformation and testing
 * Preset — Business intelligence and dashboard visualization
-
----
-
-# Authors
-
-**DATA 226 — Weather Prediction Analytics Project**
-
-Team Members:
-
-* Xuebo Zhou
-* Yifan Huang
