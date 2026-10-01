@@ -5,10 +5,17 @@ from airflow.operators.bash import BashOperator
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt"
 
+# BashOperator renders `env` as a template field, so these resolve at execution
+# time rather than when the scheduler parses this file.
 DBT_ENV = {
     "DBT_KEY_PATH": "/opt/airflow/keys/rsa_key.p8",
+    "SNOWFLAKE_ACCOUNT": "{{ var.value.SNOWFLAKE_ACCOUNT }}",
+    "SNOWFLAKE_USER": "{{ var.value.SNOWFLAKE_USER }}",
+    "SNOWFLAKE_ROLE": "{{ var.value.SNOWFLAKE_ROLE }}",
+    "SNOWFLAKE_DATABASE": "{{ var.value.SNOWFLAKE_DATABASE }}",
+    "SNOWFLAKE_WAREHOUSE": "{{ var.value.SNOWFLAKE_WAREHOUSE }}",
+    "SNOWFLAKE_KEY_PASSPHRASE": "{{ var.value.SNOWFLAKE_KEY_PASSPHRASE }}",
 }
-
 
 with DAG(
     dag_id="dbt_weather_pipeline",

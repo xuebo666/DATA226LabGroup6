@@ -28,6 +28,9 @@ def return_snowflake_conn():
 @task
 def extract(latitude, longitude):
     """Fetch hourly weather history/forecast for a location."""
+        # Jinja renders op_args as strings, so coerce to float before use.
+    latitude = float(latitude)
+    longitude = float(longitude)
     # Query the Open-Meteo API for both historical and short-term forecast data.
     # The DAG intentionally pulls a rolling window so the downstream dbt models
     # can compare recent conditions with a consistent daily baseline.
@@ -76,6 +79,9 @@ def extract(latitude, longitude):
 @task
 def transform(data, latitude, longitude):
     """Convert API payload into rows ready for Snowflake insertion."""
+    # Same coercion as extract(): template values arrive as strings.
+    latitude = float(latitude)
+    longitude = float(longitude)
     # Normalize the API response from a nested JSON payload into a tabular format.
     # Each row represents one hourly observation for the selected latitude/longitude pair.
     hourly = data.get("hourly", {})
@@ -339,33 +345,27 @@ with DAG(
 ) as dag:
 
     # LOCATION 1: BEIJING
-    beijing_latitude = Variable.get("LOCATION_1_LATITUDE")
-    beijing_longitude = Variable.get("LOCATION_1_LONGITUDE")
-
     beijing_data = extract(
-        beijing_latitude,
-        beijing_longitude,
+        "{{ var.value.LOCATION_1_LATITUDE }}",
+        "{{ var.value.LOCATION_1_LONGITUDE }}",
     )
 
     beijing_records = transform(
         beijing_data,
-        beijing_latitude,
-        beijing_longitude,
+        "{{ var.value.LOCATION_1_LATITUDE }}",
+        "{{ var.value.LOCATION_1_LONGITUDE }}",
     )
 
     # LOCATION 2: SHANGHAI
-    shanghai_latitude = Variable.get("LOCATION_2_LATITUDE")
-    shanghai_longitude = Variable.get("LOCATION_2_LONGITUDE")
-
     shanghai_data = extract(
-        shanghai_latitude,
-        shanghai_longitude,
+        "{{ var.value.LOCATION_2_LATITUDE }}",
+        "{{ var.value.LOCATION_2_LONGITUDE }}",
     )
 
     shanghai_records = transform(
         shanghai_data,
-        shanghai_latitude,
-        shanghai_longitude,
+        "{{ var.value.LOCATION_2_LATITUDE }}",
+        "{{ var.value.LOCATION_2_LONGITUDE }}",
     )
 
     # COMBINE BOTH LOCATIONS
